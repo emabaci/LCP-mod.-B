@@ -11,15 +11,15 @@
 
 \begin{document}
 
-\title{GROUPNAME -- Title of project for the assignment}
+\title{2216 -- Some catch title for the assignment}
 
 
 
 
-
-\author{James Brown}
-\author{Barry White}
-\author{Simply Red}
+\author{Christoffer Askvik Faugstad}
+\author{Veslemøy Therese Svendby Osmundsen}
+\author{Ema Baci}
+\author{Melika Keshavarzmirzamohammadi}
 
 \date{\today}
 
@@ -124,15 +124,31 @@ and  eventually with  pieces of code
 
   As already mentioned, the rest of the text is filled with ``zzz'' to show the typical length of the corresponding sections.
 
+\subsection{Variations in the training set}
+The performance as a function of the number of samples was investigated by having a fixed architecture and optimization procedure while varying the number of data samples used for training. 
 
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz.
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz.
+\subsection{Grid search for architecture}
+A grid with varying number of nodes, number of layers, dropout rate and hidden layer activation function was done, using cross validation.  
 
+
+\begin{table}[!b]
+\begin{center}
+\begin{tabular}{ll}
+quantity & value \\
+\hline
+final activation function & Sigmoid \\
+hidden layers activation function & relu\\
+number of hidden layers & $4$ \\
+number of nodes hidden layers & $10$\\
+dropout & $0.2$\\
+optimizer & adam\\
+epochs & $400$ \\
+
+\end{tabular}
+\end{center}
+\caption{The default architecture used for the neural network.}
+\label{tab:1}
+\end{table}
 
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -179,23 +195,11 @@ Cite Figure~\ref{fig:x}(a), etc. to add information. Later also cite Figure~\ref
 
 Cite Table~\ref{tab:1} to collect useful data in a clear way.
 
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz.
+\subsection{Variations in the training set}
+From figure 
+% \ref{fig:trainin_samples}
+there is a clear correlation between number of training samples and the average accuracy. Also there is a less spread in the values as the number of training samples increases. Using th
 
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz.
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz
-  zzzzzzzzzzzzzzz zzzzz zzzzzzzzzz zzzzzzz z zzzzzzzzzzz zzzz zzzzzzzzz.
-  
 %%%%%%%%%%%%%%%%%%%
 \begin{figure}[!tb]
   \includegraphics[width=0.44\textwidth]{fig1a.png}
