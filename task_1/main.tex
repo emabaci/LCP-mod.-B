@@ -54,7 +54,7 @@ After that it was possible to understand which was the best training set size th
 %They are used to see how the found network performs on a more complex function. 
 %\\
 \subsection{General model}
-The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. Each Dense layer is alternated to a dropout one with rate , and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
+The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. Each Dense layer is alternated to a dropout one with rate initially set at 0, and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
 
 \subsection{Initialization and activation functions}
 The activation functions tested in our model were sigmoid, relu(rectified linear unit), and elu(exponential linear unit), given respectively as
@@ -187,23 +187,21 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
 
 
 \begin{figure}[ht]
-  \includegraphics[width=0.44\textwidth]{task_1/num_train_box_30.pdf}
+  \includegraphics[width=0.44\textwidth]{task_1/figures/num_train_box_30.pdf}
   \caption{The accuracy's achieved by the default network with a varying number of training samples. Each started from 10 different initial weights.}
   \label{fig:num_train_samples}
 \end{figure}
 
 
 \begin{figure}[!tb]
-  \includegraphics[width=0.44\textwidth]{ag_train_box.pdf}
+  \includegraphics[width=0.44\textwidth]{task_1/figures/ag_train_box_30.pdf}
   \caption{The different accuracies achieved by the default network when adding the indicated number of augmented data per original training data. The values are for 10 different initial weights for each augmented data per original training data. The original training data consist of $3200$ samples.}
   \label{fig:augmented_train_sampels}
 \end{figure}
 
 
 \begin{figure}[!tb]
-  \includegraphics[width=0.44\textwidth]{
-  ag_train_box.pdf % Need to be changed
-  }
+  \includegraphics[width=0.44\textwidth]{task_1/figures/init_weights_box_30.pdf}
   \caption{
   The distribution of accuracies achieved with different initialization distributions. 
   }
@@ -212,9 +210,7 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
 
 
 \begin{figure}[!tb]
-  \includegraphics[width=0.44\textwidth]{
-  ag_train_box.pdf % Need to be changed
-  }
+  \includegraphics[width=0.44\textwidth]{task_1/figures/rescale_box_30.pdf}
   \caption{
   The distribution of accuracies achieved with different re-scaling methods. 
   }
@@ -222,16 +218,28 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
 \end{figure}
 
 \begin{figure}[!tb]
-  \includegraphics[width=0.44\textwidth]{
-  ag_train_box.pdf % Need to be changed
-  }
+  \includegraphics[width=0.44\textwidth]{task_1/figures/types_box_30.pdf}
   \caption{
   The distribution of accuracies for the different non-linear functions used to label the points. 
   }
   \label{fig:rescale_box}
 \end{figure}
 
+\begin{figure}[!tb]
+  \includegraphics[width=0.44\textwidth]{task_1/figures/architecture_box_30.pdf}
+  \caption{
+  The three best architectures from grid search
+  }
+  \label{fig:architecture_gs_box}
+\end{figure}
 
+\begin{figure}[!tb]
+  \includegraphics[width=0.44\textwidth]{task_1/figures/training_box_30.pdf}
+  \caption{
+  The three best training options from grid search
+  }
+  \label{fig:architecture_gs_box}
+\end{figure}
 
 
 \section{Conclusions}
