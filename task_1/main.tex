@@ -49,24 +49,26 @@
 
 \begin{document}
 
-\title{2216 -- Some catch title for the assignment}
+\title{2216 -- A deep dive into Neural Networks for 2-dimensional Binary Classification}
+% \title{2216 -- The hunt for the golden Neural Network for Classifying a Triangle}
 
 \author{Ema Baci}
 \author{Christoffer Askvik Faugstad}
-\author{Melika Keshavarzmirzamohammadi}
 \author{Veslemøy Therese Svendby Osmundsen}
 
 \date{\today}
 
 \begin{abstract}
-An investigation was done to determine how different hyper parameters in a deep neural network impacts its performance. The architecture of the network, training parameters and initialization of the layers in the model was tuned by using grid search, yielding the best possible model for the task. It was found that a smaller sample size for training is sufficient to yield a good accuracy as long as the number of epochs is increased, and that in the case of limited data points, augmentation serves well as an artificial generator of more samples. For the simple task of binary classification of points, several combinations of parameters yielded good results which indicated that a very complex network was ambiguous for our classification task. 
+An investigation was done to determine how different hyper parameters in a deep neural network impacts its performance. The architecture of the network, training parameters and initialization of the layers in the model was tuned by using grid search, yielding the best possible model for the task. It was found that a smaller sample size for training is sufficient to yield a good accuracy as long as the number of epochs is increased, and that in the case of limited data points, augmentation serves well as an artificial generator of more samples. For the simple task of binary classification of points, several combinations of parameters yielded good results which indicated that a very complex network is not necessary for such a simple task.
 
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
-In this task a sequential deep neural network was built to perform binary classification of points. The aim was to predict whether a given point in a grid of size $\left[-50,50\right]$ was classified within the boundaries of a chosen shape or pattern. In our experiments a triangle was used as the geometrical shape, and hence the final network model was tuned for that purpose. The network parameters chosen may also work well for training of other simple shapes, but for more complex patterns, a more complex model is needed. Nevertheless, the triangle works well to show the impact of the different parameters on the network.
+Neural Networks(NN) are the new standard for data classification and regression, but the more modern approaches includes many advanced features and their effects may be hard to grasp. Even the naive fully connected forward feed NN have many possible design choices and parameters that affects its performance. To understand what their influence is it is best to study a known, simple problem. Therefore, binary two dimensional samples taken from a known distribution, binary classified by a known non-linear function, was studied. This allows for simple visualization and evaluation of the NN performance.
+
+% In this task a sequential deep neural network was built to perform binary classification of two dimensional points. The aim was to predict whether a given point in a grid of size $\left[-50,50\right]$ was classified within the boundaries of a chosen shape or pattern. In our experiments a triangle was used as the geometrical shape, and hence the final network model was tuned for that purpose. The network parameters chosen may also work well for training of other simple shapes, but for more complex patterns, a more complex model is needed. Nevertheless, the triangle works well to show the impact of the different parameters on the network.
 
 %%%%%%%%%%%%%%%%%%%
 %\begin{figure*}[!tb]
@@ -77,9 +79,9 @@ In this task a sequential deep neural network was built to perform binary classi
 %\end{figure*}
 %%%%%%%%%%%%%%%%%%%
 
- \section{Methods}
-In this section the methods used to characterize a Neural Network (NN) built with Keras library are discussed. First of all the NN was trained with several training sets with different sizes, then the response of the NN to augmented training sets was studied. 
-After that it was possible to understand which was the best training set size that optimizes both the accuracy and the computational time. The performance of the NN was then further improved through a Grid Search Validation process, that lead to the best parameters and though the optimization of the initial weights.
+\section{Methods}
+In order to optimize the network, many parameters needed to be taken into consideration. First of all, the number of samples needed to train the network sufficiently was considered to determine the training set size that would optimize both the accuracy and the computational time. Next, the effect of adding augmented samples to the training set as a substitute for more generated data was investigated. The performance of the NN was then further improved through a Grid Search Validation process, that led to the best parameters and the optimization of the initial weights.
+
 %\subsection{Problem} % Not to be kept
 %A binary classification problem in two dimensions is considered where the samples are labeled by a non-linear function. The samples have each component drawn uniformly and uncorrelated from the range $[-50,50]$. The main non-linear function used is the triangle, described by the function 
 %\begin{equation}
@@ -92,27 +94,48 @@ After that it was possible to understand which was the best training set size th
 % \ref{fig:domains}. % Not sure if this should be present.
 %They are used to see how the found network performs on a more complex function. 
 %\\
-\subsection{The Neural Network architecture}
-The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense. Each Dense layer is alternated to a Dropout one with rate initially set at 0, and the sigmoid function is given as activation in the final layer. 
-The initial parameters choosen are reported below:
+% \subsection{The Neural Network architecture}
 
-\begin{lstlisting}[style=python]
-def create_model(
-    optimizer       = "adam",
-    hidden_layers   = 4,
-    number_of_nodes = 10,
-    dropout       = 0,
-    activation    = 'relu',
-    weight_init   = 'glorot_uniform',
-    learning_rate = 0
-    ):
-\end{lstlisting}
+The network model was created by using Keras.Sequential(), which yields a fully connected neural network. The hidden layers were of the type Dense, each subject to a set dropout rate. For the final layer the activation function sigmoid was used. The following parameters were to be decided:
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{lllll}
+\hline
+Parameters\\
+\hline
+Number of hidden layers\\
+Initialization of weights\\
+Activation function\\
+Dropout rate\\
+Batchsize\\
+Number of epochs\\
+\hline
+\end{tabular}
+\end{center}
+\caption{The parameters investigated to optimize the performance of the neural network.}
+\label{tab:grid_search_training}
+\end{table}
+
+%The initial parameters chosen are reported below:
+
+% \begin{lstlisting}[style=python]
+% def create_model(
+%     optimizer       = "adam",
+%     hidden_layers   = 4,
+%     number_of_nodes = 10,
+%     dropout       = 0,
+%     activation    = 'relu',
+%     weight_init   = 'glorot_uniform',
+%     learning_rate = 0
+%     ):
+% \end{lstlisting}
 
 % IF THERE IS SPACE WE CAN ADD THE THE MODEL.SUMMMARY()
 
 % in the gs part
 %The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
-\begin{comment}
+% \begin{comment}
 The activation functions tested in our model were sigmoid, relu(rectified linear unit), and elu(exponential linear unit), given respectively as
 \begin{equation}
     \sigma(x) = \frac{1}{1+e^{-x}},
@@ -133,9 +156,7 @@ and
     \end{cases}
     \label{eq:elu}
 \end{equation}
-
-% The training of a neural network is also very sensitive to its initial weights.
-In keras the default initialization of the initial weights is a glorot uniform distribution. The glorot uniform distribution is specially designed for the sigmoid activation function, and draws values uniformly from the interval $-[\textrm{limit},\textrm{limit}]$. The limit is given by 
+In Keras the default initialization of the initial weights is a glorot uniform distribution. The glorot uniform distribution is specially designed for the sigmoid activation function, and draws values uniformly from the interval $-[\textrm{limit},\textrm{limit}]$. The limit is given by 
 \begin{equation}
     \textrm{lim}_\textrm{Glorot} = \sqrt{\frac{6}{\textrm{fan}_{in}+\textrm{fan}_{out}}},
 \end{equation}
@@ -145,35 +166,70 @@ where $\textrm{fan}_{in}$ and $\textrm{fan}_{out}$ denotes the number of input a
     \textrm{lim}_\textrm{He} = \sqrt{\frac{6}{\textrm{fan}_{in}}},
 \end{equation}
 depending only on the number of input layers. This is normally a better option for the rectified linear unit activation function. Both distributions were tested to initialize the weights of our model.
-\\
-When re-scaling the data three methods are considered. Since the actual distribution is known the first is to divide by $50$ giving a uniform distribution between $[-1,1]$. The equivalent of this when the sample distribution is unknown is to normalize the data by using the max and min of the training samples. The third approach considered it to standardize. Then the mean is subtracted and its divided by the standar diviation of the training samples.  
 
-\end{comment}
+When re-scaling the data three methods were considered. Since the actual distribution was known the first approach was to divide by $50$ giving a uniform distribution between $[-1,1]$. The equivalent of this when the sample distribution is unknown is to normalize the data by using the max and min of the training samples. The third approach considered was to standardize. Then the mean is subtracted and its divided by the standard deviation of the training samples.
 
-\subsection{Multiple training sets}
+% \subsection{Multiple training sets}
 
-The effect of the achieved accuracy of the NN given the number of samples was found by fixing the architecture and the training procedure and only changing the number of training samples in use. In particular the NN was trained with eight different training sets, whose sizes start from 100 and go 
+The effect of the achieved accuracy of the NN given the number of samples was found by fixing the architecture and the training procedure, and only changing the number of training samples in use. In particular the NN was trained with eight different training sets, whose sizes started from 100 and went up to 12800, following the rule that the size of the (i+1)-set was double the size of the i-set.
+The validation set size instead was chosen constant and equal to 800.
 
-from 100 to 12800, all generated by the same distribution.
+Both the training and the validation samples are generated thought the numpy.random.random() function in the range [-50,50]$\times$[-50,50] and labeled according to a labeling function.
+
+%\begin{lstlisting}[style=python]
+%    x = (np.random.random((N,L))-0.5)*B
+%    y = non_linear_func(x,TYPE = TYPE)
+%\end{lstlisting}
 
 %\subsection{Handling Uncertainty}
 
-The training process of the network is a stochastic process and therefore the obtained accuracies greatly depend on the initial weights. Because of this each network is trained from 30 fixed initial weights (only if the architecture is identical) and the results are displayed as box-plot to illustrate the variance. If a gird search is done there is instead used 5 fold cross validation.
+The training process of the network is a stochastic process and therefore the obtained accuracies greatly depend on the initial weights. To find the average performance of a set architecture, the network was therefore trained 30 times, using 30 sets of fixed initial weights for each training set. The results are displayed as a box-plot to illustrate the average performance for each training set and the variance. %If a gird search is done there is instead used 5 fold cross validation. 
 
-\subsubsection{Augmenting data}
-% With limited data samples, augmentation can be used to artificially generate more data.
-The data points were artificially augmented by adding a small perturbation to each of the components of the original samples. The small perturbations are drawn uniformly from $[-0.05,0.05]$. To investigate the impact of the augmentation, different ratios of augmented to original samples in the training set were tested, while holding the number of original training samples fixed.\\
+% \subsection{Augmenting data}
+To study the neural network's response to augmentation of the data, a number of augmented samples were added to the original data set before training. The augmentation was done by adding a small perturbation to each of the components of the original samples. The small perturbations are drawn uniformly from $[-\epsilon, \epsilon]$.
+The NN was therefore trained with several augmented training sets obtained with $\epsilon$ varying in the range \texttt{numpy.logspace(-8,1,12)}.
 
+To better investigate the impact of the augmentation, different ratios of augmented to original samples in the training set were tested. In particular the ratios taken in interest are 0, 1, 2, 4 and 16.
 
-\subsection{Gridsearch}
-There are many parameters to be determined in a neural network. Grid search is an effective way of finding the optimal combination of hyper parameters and was the method used for the finetuning of our model. The parameters were divided into the three categories; arcitecture, training and initialization, and a grid search was done for each category.
+%while holding the number of original training samples fixed.\\
 
-To determine the architecture of the network, a grid with varying number of nodes, number of layers, dropout rate, hidden layers and activation function was done, using cross validation.
+% \subsection{Gridsearch}
 
-To determine the training parameters, a grid with varying batch size, optimizer and number of epochs was done while having a fixed architecture of the network, and using the default initialization function in keras and cross validation.
+There are many parameters to be determined in a neural network. Grid search is an effective way of finding the optimal combination of hyper parameters and was the method used for the finetuning of our model. To implement the grid search \texttt{sklearn.model\_selection} and \texttt{tensorflow.keras.wrappers.scikit\_learn} libraries were used. From the first \texttt{GridSearchCV} is imported instead  \texttt{KerasClassifier} is imported from the second.
 
+The parameters were divided into three categories: architecture, initialization and training and a grid search was done for each category.
+
+To determine the architecture of the network, a grid with varying number of nodes, number of layers, dropout rate, hidden layers and activation function was done, using cross validation. The range tested are reported below.
+
+\begin{lstlisting}[style=python]
+hidden_layers   = [2,3,4]
+number_of_nodes = [10,20,40]
+dropouts        = [0, 0.1]
+activations     = ['relu','elu']
+\end{lstlisting}
+
+To determine the training parameters, a grid with varying batch size, optimizer and number of epochs was done while having a fixed architecture of the network set to the best option from the architectural grid search, and using the default initialization function in keras and cross validation. The parameters taken in account are reported below.
+\begin{lstlisting}[style=python]
+batch_size = [16,64,128]
+optimizers = ['Adam','RMSprop']
+epochs =     [100,200,400]
+\end{lstlisting}
 To find the best initialization conditions, a grid with varying initialization function and activation function was done with cross validation, while the architecture and training parameters were held fixed.
+% those are the last 
+\begin{lstlisting}[style=python]
+batch_size = [16,64,128]
+epochs = [50,100]
+learning_rates = [1,0.1,0.001,0.0001]
+\end{lstlisting}
 
+The grid search validation was implemented through the \texttt{KerasClassifier(build\_fn)} function that takes as parameter the NN model. Then the grid search cross validation was implemented with the \texttt{.fit()} method of \texttt{GridSearchCV()}
+
+% \subsection{Rescaling}
+
+% The samples used since now were downsized by a factor equal to 50. A further analysis as been done to find out a better rescaling.
+%Think this is mentioned further up <3
+
+% \subsection{Initial weights}
 
 \begin{table}[!b]
 \begin{center}
@@ -200,48 +256,82 @@ target function & triangle
 \end{table}
 
 
+\newcommand{\figwidth}{ 0.455 \textwidth}
+\begin{figure*}[!tb]
+  \centering
+  \includegraphics[width=\figwidth]{task_1/figures/num_train_box_30_2.pdf}
+  \hskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/ag_train_box_30_2.pdf}
+  \vskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/architecture_box_30_2.pdf}
+  \hskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/training_box_30_.pdf}
+  \vskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/init_weights_box_30_2.pdf}
+  \hskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/rescale_box_30_2.pdf}
+  \caption{The figure shown the 30 run distribution accuracies for different cases:
+  (a) Different number of training samples with default network and training parameters. (b) Additional augmented samples per original training samples. (c) The three best scoring architectures found through grid search with default training parameters. The short hands are, \textbf{a} the activation of the hidden layers, do the dropout of each hidden layer, l the number of hidden layers and n the number of nodes in each hidden layer. (d) The three best scoring training parameters found through grid search with default architecture. The o is the optimizer algorithm used, bs is the batch size and e is the number of epochs used. (e) Different weight initialization distributions. (f) Different re-scaling methods.}
+  \label{fig:all}
+\end{figure*}
+
 \section{Results}
-\begin{table}[!b]
-\begin{center}
-\begin{tabular}{llllll}
-\hline
-accuracy(std) & time[s] & layers & nodes & dropout & afunc \\
-\hline
-0.977 (0.029) & 9.77 & 3 & 40 & 0.0 & relu\\
-0.980 (0.026) & 9.84 & 4 & 10 & 0.0 & relu\\
-0.988 (0.020) & 10.74 & 4 & 40 & 0.0& relu\\
-\hline
-\end{tabular}
-\end{center}
-\caption{The best architectures found from grid search with cross validation with 5 folds. Time is the average time used to train the network. Layers is the number of hidden layers, searched over the values 2,3,4. Nodes are the number of nodes in each hidden layer, the values used for the grid were 10,20,40. Dropout is the dropout rate of the nodes in the hidden layers. The values 0 and 0.1 were checked. Afunc is the activation function used in the hidden layers, where sigmoid, relu and elu were the alternatives. The presented accuracy is the average value when the model is trained from 10 different initial weights.}
-\label{tab:grid_search_architecture}
-\end{table}
+% Number of training sampels
+The distribution of accuracies from as a function of the number of training samples is shown in figure \ref{fig:all}(a). There was a clear correlation between number of training samples and the average accuracy, as one would expect. With a larger number of samples giving a better and better average accuracy. There was also a smaller variation in the obtained accuracies as the number of training samples increased. From the data one can conclude that $3200$ training samples is a satisfactory number. Since the larger values of training samples had a similar average and variation, but notably a bit better. 
+
+%Augmented data
+The effect on the accuracy distributions by adding augmented data in addition to the original training data, set to $3200$ samples, is shown in figure \ref{fig:all}(b). Here ones observed that the addition of extra augmented samples slightly dropped the average accuracy but greatly reduced the variation, especially when there was $4$ and $16$ augmented samples per original sample. The interesting part is was to compare this with the case of training with $12800$ actual samples. One observed that the augmented data gives a similar accuracy and a smaller spread. This shows that one can improve a NN performance by adding augmented data. But given that the procedure for augmenting that data was chosen to best fit the actual problem this was regarded as a best case scenario. 
+
+% Grid Search Over architecture
 
 
-\begin{table}[!b]
-\begin{center}
-\begin{tabular}{lllll}
-\hline
-accuracy(std) & batch size & epochs & optimizer \\
-\hline
-0.964 (0.034) & 16 & 400 & Adam\\
-0.950 (0.030) & 4 & 400 & RMSpropu\\
-0.961 (0.029) & 4 & 40 & 0.0& relu\\
-\hline
-\end{tabular}
-\end{center}
-\caption{The best training parameters found from grid search with cross validation with 5 folds. The presented accuracy is the average value when the model is trained from 10 different initial weights. The batch size is the number of samples used for each update. The epochs are the number of times the training set has been looped through. The optimizer is the optimizing algorithm used to train the network. The default architecture is used.}
-\label{tab:grid_search_training}
-\end{table}
-
-\subsection{Variations in the training set}
-
-From figure \ref{fig:num_train_samples} there is a clear correlation between number of training samples and the average accuracy. The increased accuracy approach the optimal value. There is also a smaller spread in the obtained accuracies as the number of training samples increases. From the data one can conclude that $3200$ training is a satisfactory compromise between accuracy and computation time. The larger values of training samples has the same similar average, but considerably less variation. 
 
 
-\subsection{Augmented data}
-The accuracies obtain over 10 runs, each with different proportions of augmented data compared to real data. \ref{fig:augmented_train_sampels}. The figure shows that adding extra augmented samples decrease the average accuracy, but at the expense of this the spread of the data is smaller.
+\section{Conclusions}
 
+
+Check if your text is light, swift, and correct in exposing its passages.
+
+
+
+
+
+
+
+
+\begin{figure}[!tb]
+  \includegraphics[width = \figwidth]{task_1/figures/non_linear_functions_2.pdf}
+  \vskip 0.5mm
+  \includegraphics[width=\figwidth]{task_1/figures/types_box_30_2.pdf}
+  \caption{The top row shown the non-linear functions. The lower shows the 30 run accuracy distributions for the different types of functions with the default network.}
+  \label{fig:non-linear_functions}
+\end{figure}
+
+
+
+\begin{thebibliography}{99}
+
+\bibitem{pap1}
+  B. Franklin,
+  J. Here There {\bf 10}, 20--40 (1800).
+  
+\bibitem{pap2}
+  A. Einstein,
+  Int. J. There Here {\bf 20}, 125--133 (1910).
+  
+\end{thebibliography}
+
+\clearpage
+
+% %%%%%%%%%%%%%%%%%%%
+% \begin{figure*}[!tb]
+%   \centering
+%   \includegraphics[width=\textwidth]{description_assignment_LCPB_20-21.pdf}
+% \end{figure*}
+% %%%%%%%%%%%%%%%%%%%
+
+
+\end{document}
 
 \begin{figure}[ht]
   \includegraphics[width=0.44\textwidth]{task_1/figures/num_train_box_30.pdf}
@@ -308,58 +398,6 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
 \end{figure}
 
 
-\section{Conclusions}
-
-
-Check if your text is light, swift, and correct in exposing its passages.
-
-
-
-\begin{figure*}[!tb]
-  \centering
-  \includegraphics[width=0.455\textwidth]{task_1/figures/num_train_box_30_2.pdf}
-  \hskip 0.5mm
-  \includegraphics[width=0.455\textwidth]{task_1/figures/ag_train_box_30_2.pdf}
-  \vskip 0.5mm
-  \includegraphics[width=0.455\textwidth]{task_1/figures/init_weights_box_30_2.pdf}
-  \hskip 0.5mm
-  \includegraphics[width=0.455\textwidth]{task_1/figures/rescale_box_30_2.pdf}
-  \vskip 0.5mm
-  \includegraphics[width=0.455\textwidth]{task_1/figures/types_box_30_2.pdf} \hskip 0.5mm
-  \includegraphics[width = 0.455\textwidth]{task_1/figures/non_linear_functions.pdf}
-  \caption{Description of the panels: (a)..... (b)... etc. This caption should give enough info on the content of figures to make them mostly readable without consulting the main text. However, repetitions with the main text should e avoided if possible. {\color{red} If this format is difficult to frame in the page you want, just break it into multiple single figures.}}
-  \label{fig:x}
-\end{figure*}
-
-
-
-\begin{thebibliography}{99}
-
-\bibitem{pap1}
-  B. Franklin,
-  J. Here There {\bf 10}, 20--40 (1800).
-  
-\bibitem{pap2}
-  A. Einstein,
-  Int. J. There Here {\bf 20}, 125--133 (1910).
-  
-\end{thebibliography}
-
-\clearpage
-
-% %%%%%%%%%%%%%%%%%%%
-% \begin{figure*}[!tb]
-%   \centering
-%   \includegraphics[width=\textwidth]{description_assignment_LCPB_20-21.pdf}
-% \end{figure*}
-% %%%%%%%%%%%%%%%%%%%
-
-
-\end{document}
-
-
-
-
 
 
 
@@ -389,14 +427,43 @@ momentum & $p$ & $v$
 \end{table}
 
 
+\begin{table}[!b]
+\begin{center}
+\begin{tabular}{llllll}
+\hline
+accuracy(std) & time[s] & layers & nodes & dropout & afunc \\
+\hline
+0.977 (0.029) & 9.77 & 3 & 40 & 0.0 & relu\\
+0.980 (0.026) & 9.84 & 4 & 10 & 0.0 & relu\\
+0.988 (0.020) & 10.74 & 4 & 40 & 0.0& relu\\
+\hline
+\end{tabular}
+\end{center}
+\caption{The best architectures found from grid search with cross validation with 5 folds. Time is the average time used to train the network. Layers is the number of hidden layers, searched over the values 2,3,4. Nodes are the number of nodes in each hidden layer, the values used for the grid were 10,20,40. Dropout is the dropout rate of the nodes in the hidden layers. The values 0 and 0.1 were checked. Afunc is the activation function used in the hidden layers, where sigmoid, relu and elu were the alternatives. The presented accuracy is the average value when the model is trained from 10 different initial weights.}
+\label{tab:grid_search_architecture}
+\end{table}
+
+
+\begin{table}[!b]
+\begin{center}
+\begin{tabular}{lllll}
+\hline
+accuracy(std) & batch size & epochs & optimizer \\
+\hline
+0.964 (0.034) & 16 & 400 & Adam\\
+0.950 (0.030) & 4 & 400 & RMSpropu\\
+0.961 (0.029) & 4 & 40 & 0.0& relu\\
+\hline
+\end{tabular}
+\end{center}
+\caption{The best training parameters found from grid search with cross validation with 5 folds. The presented accuracy is the average value when the model is trained from 10 different initial weights. The batch size is the number of samples used for each update. The epochs are the number of times the training set has been looped through. The optimizer is the optimizing algorithm used to train the network. The default architecture is used.}
+\label{tab:grid_search_training}
+\end{table}
 
 
 
 
-
-
-
-\subsection{Classification}
+% \subsection{Classification}
 The rectangle for labeling the samples was given by the limits
 \begin{equation}
 f(x_1,x_2) = \begin{cases} 1,\
