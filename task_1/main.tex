@@ -8,12 +8,9 @@
 \usepackage[pdftex,colorlinks=true, pdfstartview=FitV, linkcolor= linkcolor, citecolor= linkcolor, urlcolor= linkcolor, hyperindex=true,hyperfigures=true]{hyperref} %hyperlink%
 
 
-
 \begin{document}
 
 \title{2216 -- Some catch title for the assignment}
-
-
 
 \author{Ema Baci}
 \author{Christoffer Askvik Faugstad}
@@ -21,7 +18,6 @@
 \author{Veslemøy Therese Svendby Osmundsen}
 
 \date{\today}
-
 
 \begin{abstract}
 An investigation was done to determine how different hyper parameters in a deep neural network impacts its performance. The architecture of the network, training parameters and initialization of the layers in the model was tuned by using grid search, yielding the best possible model for the task. It was found that a smaller sample size for training is sufficient to yield a good accuracy as long as the number of epochs is increased, and that in the case of limited data points, augmentation serves well as an artificial generator of more samples. For the simple task of binary classification of points, several combinations of parameters yielded good results which indicated that a very complex network was ambiguous for our classification task. 
@@ -31,7 +27,7 @@ An investigation was done to determine how different hyper parameters in a deep 
 \maketitle
 
 \section{Introduction}
-In this task a sequential deep neural network was built to perform binary classification of points. The aim was to predict whether a given point in a grid of size $\left[-50,50\right]$ was positioned within the boundaries of a chosen shape or pattern. In our experiments a triangle was used as the geometrical shape, and hence the final network model was tuned for that purpose. The network parameters chosen may also work well for training of other simple shapes, but for more complex patterns, a more complex model is needed. Nevertheless, the triangle works well to show the impact of the different parameters on the network.
+In this task a sequential deep neural network was built to perform binary classification of points. The aim was to predict whether a given point in a grid of size $\left[-50,50\right]$ was classified within the boundaries of a chosen shape or pattern. In our experiments a triangle was used as the geometrical shape, and hence the final network model was tuned for that purpose. The network parameters chosen may also work well for training of other simple shapes, but for more complex patterns, a more complex model is needed. Nevertheless, the triangle works well to show the impact of the different parameters on the network.
 
 %%%%%%%%%%%%%%%%%%%
 %\begin{figure*}[!tb]
@@ -43,23 +39,23 @@ In this task a sequential deep neural network was built to perform binary classi
 %%%%%%%%%%%%%%%%%%%
 
  \section{Methods}
- \subsection{Problem} % Not to be kept
- 
- A binary classification problem in two dimensions is considered where the samples are labeled by a non-linear function. The samples have each component drawn uniformly and uncorrelated from the range $[-50,50]$. The main non-linear function used is the triangle, described by the function 
-\begin{equation}
-f(x_1,x_2) = \begin{cases} 1,\
-x_1\in [-20,80] \wedge x_2 \in [-40,80-x_1]\\
-0, \ \textrm{else}.
-\end{cases}
-\end{equation}
-Other functions used for labeling are shown in figure
+In this section the methods used to characterized a Neural Network (NN) built with Keras library are discussed. First of all the NN was trained with several training sets with different sizes, then the response of the NN to augmented training sets was studied. 
+After that it was possible to understand which was the best training set size that optimizes both the accuracy and the computational time. The performance of the NN was then further improved through a Grid Search Validation process, that leads to the best parameters and though the optimization of the initial weights.
+%\subsection{Problem} % Not to be kept
+%A binary classification problem in two dimensions is considered where the samples are labeled by a non-linear function. The samples have each component drawn uniformly and uncorrelated from the range $[-50,50]$. The main non-linear function used is the triangle, described by the function 
+%\begin{equation}
+%f(x_1,x_2) = \begin{cases} 1,\
+%x_1\in [-20,80] \wedge x_2 \in [-40,80-x_1]\\
+%0, \ \textrm{else}.
+%\end{cases}
+%\end{equation}
+%Other functions used for labeling are shown in figure
 % \ref{fig:domains}. % Not sure if this should be present.
-They are used to see how the found network performs on a more complex function. 
-\\
-
+%They are used to see how the found network performs on a more complex function. 
+%\\
 \subsection{General model}
-The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. A dropout layer was added to prevent biased weights, and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
 
+The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. A dropout layer was added to prevent biased weights, and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
 
 \subsection{Initialization and activation functions}
 The activation functions tested in our model were sigmoid, relu(rectified linear unit), and elu(exponential linear unit), given respectively as
@@ -103,7 +99,7 @@ When re-scaling the data three methods are considered. Since the actual distribu
 The training process of the network is a stochastic process and therefore the obtained accuracies greatly depend on the initial weights. Because of this each network is trained from 30 fixed initial weights (only if the architecture is identical) and the results are displayed as box-plot to illustrate the variance. If a gird search is done there is instead used 5 fold cross validation.
 
 \subsubsection{Number of training samples}
-The effect of the achieved accuracy of the neural network given the number of samples was found by fixing the architecture and the training procedure and only changing the number of training samples in use.
+The effect of the achieved accuracy of the neural network given the number of samples was found by fixing the architecture and the training procedure and only changing the number of training samples in use. In particular the neural network was trained with eight different training sets, with sizes from 100 to 12800, all generated by the same distribution.
 
 
 \subsubsection{Augmenting data}
@@ -225,6 +221,17 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
   }
   \label{fig:rescale_box}
 \end{figure}
+
+\begin{figure}[!tb]
+  \includegraphics[width=0.44\textwidth]{
+  ag_train_box.pdf % Need to be changed
+  }
+  \caption{
+  The distribution of accuracies for the different non-linear functions used to label the points. 
+  }
+  \label{fig:rescale_box}
+\end{figure}
+
 
 
 
