@@ -54,8 +54,7 @@ After that it was possible to understand which was the best training set size th
 %They are used to see how the found network performs on a more complex function. 
 %\\
 \subsection{General model}
-
-The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. A dropout layer was added to prevent biased weights, and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
+The network model was created by using Keras.Sequential(), which yields a fully connected deep neural network. The hidden layers are of the type Dense, with the activation function and number of nodes as inputs. Each Dense layer is alternated to a dropout one with rate , and the sigmoid function is given as activation in the final layer. The different parameters of the architecture of the network was given by input to the model compiler in order to apply grid search for tuning. Hence, the final architecture of the network was determined by the findings of our research.
 
 \subsection{Initialization and activation functions}
 The activation functions tested in our model were sigmoid, relu(rectified linear unit), and elu(exponential linear unit), given respectively as
@@ -188,7 +187,7 @@ The accuracies obtain over 10 runs, each with different proportions of augmented
 
 
 \begin{figure}[ht]
-  \includegraphics[width=0.44\textwidth]{num_train_box.pdf}
+  \includegraphics[width=0.44\textwidth]{task_1/num_train_box_30.pdf}
   \caption{The accuracy's achieved by the default network with a varying number of training samples. Each started from 10 different initial weights.}
   \label{fig:num_train_samples}
 \end{figure}
